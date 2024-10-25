@@ -19,3 +19,9 @@ model User {
   user_email    String @unique
   user_password String
 }
+
+model Airplane {
+  airplane_id       Int    @id @default(autoincrement())
+  airplane_model    String @unique
+  airplane_capacity Int
+}
