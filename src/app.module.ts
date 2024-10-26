@@ -12,6 +12,7 @@ import { CreateUserMiddleware } from './middleware/user_middleware/user_create.m
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { AirplaneModule } from './airplane/airplane.module';
+import { AirlineModule } from './airline/airline.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AirplaneModule } from './airplane/airplane.module';
     }),
     AuthModule,
     AirplaneModule,
+    AirlineModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -21,7 +21,16 @@ model User {
 }
 
 model Airplane {
-  airplane_id       Int    @id @default(autoincrement())
-  airplane_model    String @unique
+  airplane_id       Int     @id @default(autoincrement())
+  airplane_model    String  @unique
   airplane_capacity Int
+  airline_id        Int
+  Airline           Airline @relation(fields: [airline_id], references: [airline_id])
+}
+
+model Airline {
+  airline_id   Int        @id @default(autoincrement())
+  airline_code String     @unique
+  airline_name String
+  Airplane     Airplane[]
 }

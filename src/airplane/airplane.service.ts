@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { AirlineService } from 'src/airline/airline.service';
 import { CustomException } from 'src/common/exception/CustomException';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AirplaneService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private airlineService: AirlineService,
+  ) {}
 
   async create(createAirplaneDto: Prisma.AirplaneCreateInput) {
     const airplane = await this.prisma.airplane.findFirst({
@@ -18,13 +22,29 @@ export class AirplaneService {
       throw new CustomException('Airplane already exists');
     }
 
+    const airline = await this.airlineService.findOne(
+      createAirplaneDto.Airline as string,
+    );
+
     return await this.prisma.airplane.create({
-      data: createAirplaneDto,
+      data: {
+        airplane_model: createAirplaneDto.airplane_model,
+        airplane_capacity: createAirplaneDto.airplane_capacity,
+        Airline: {
+          connect: {
+            airline_code: airline.airline_code,
+          },
+        },
+      },
     });
   }
 
   async findAll() {
-    return await this.prisma.airplane.findMany();
+    return await this.prisma.airplane.findMany({
+      include: {
+        Airline: true,
+      },
+    });
   }
 
   async findOne(email: string) {
