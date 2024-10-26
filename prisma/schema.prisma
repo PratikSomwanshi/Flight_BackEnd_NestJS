@@ -26,6 +26,7 @@ model Airplane {
   airplane_capacity Int
   airline_id        Int
   Airline           Airline @relation(fields: [airline_id], references: [airline_id])
+  Flight            Flight?
 }
 
 model Airline {
@@ -33,4 +34,28 @@ model Airline {
   airline_code String     @unique
   airline_name String
   Airplane     Airplane[]
+  Flight       Flight[]
+}
+
+model Airport {
+  airport_id        Int      @id @default(autoincrement())
+  airport_code      String   @unique
+  airport_name      String
+  OriginFlight      Flight[] @relation("origin_airport")
+  DestinationFlight Flight[] @relation("destination_airport")
+}
+
+model Flight {
+  flight_id           Int      @id @default(autoincrement())
+  flight_number       String   @unique
+  departure_date      DateTime
+  arrival_date        DateTime
+  origin_airport      Int
+  destination_airport Int
+  airplane_id         Int      @unique
+  airline_id          Int
+  Airplane            Airplane @relation(fields: [airplane_id], references: [airplane_id], onDelete: Cascade)
+  Airline             Airline  @relation(fields: [airline_id], references: [airline_id], onDelete: Cascade)
+  OriginAirport       Airport  @relation("origin_airport", fields: [origin_airport], references: [airport_id])
+  DestinationAirport  Airport  @relation("destination_airport", fields: [destination_airport], references: [airport_id])
 }

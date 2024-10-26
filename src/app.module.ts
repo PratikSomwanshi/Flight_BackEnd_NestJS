@@ -13,6 +13,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { AirplaneModule } from './airplane/airplane.module';
 import { AirlineModule } from './airline/airline.module';
+import { AirportModule } from './airport/airport.module';
+import { FlightModule } from './flight/flight.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { AirlineModule } from './airline/airline.module';
     AuthModule,
     AirplaneModule,
     AirlineModule,
+    AirportModule,
+    FlightModule,
   ],
   controllers: [AppController],
   providers: [AppService],
